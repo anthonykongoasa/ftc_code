@@ -18,7 +18,7 @@ public class testpath extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
 
         // ---------------- Setup MecanumDrive ----------------
-        Pose2d startPose = new Pose2d(-40, 61, Math.toRadians(90));
+        Pose2d startPose = new Pose2d(-52, -48, Math.toRadians(55));
         drive = new MecanumDrive(hardwareMap, startPose);
         drive.setPoseEstimate(startPose);
 
