@@ -32,40 +32,39 @@ public class testpath extends LinearOpMode {
             drive.actionBuilder(startPose)
 
                 // Shoot #1
-                .strafeToLinearHeading(shootPos, Math.toRadians(45), new TranslationalVelConstraint(60))
-                .waitSeconds(2.75)
+                strafeToLinearHeading(shootPos, Math.toRadians(45), new TranslationalVelConstraint(60))
+                        //.waitSeconds(2.75) // we'll take this out + replace w/ shooting stuff
+                        //shoot();
+                        // ----------------------------Intake 1st pile --------
+                        //intake.setPower(-1);
+                        .strafeToLinearHeading(new Vector2d(-12, -30), Math.toRadians(-90))
+                        .strafeToLinearHeading(new Vector2d(-12, -48), Math.toRadians(-90), new TranslationalVelConstraint(60))
 
-                // Intake #1
-                .splineToLinearHeading(new Pose2d(-30, 12, Math.toRadians(180)), Math.toRadians(0))
-                .strafeToLinearHeading(new Vector2d(-48, 12), Math.toRadians(180), new TranslationalVelConstraint(60))
+                       //----------------gate-------
+                       
+                        .strafeToLinearHeading(new Vector2d(-6, -50), Math.toRadians(180))
+                        .strafeToConstantHeading(new Vector2d(-6, -52), new TranslationalVelConstraint(65))
+                        .waitSeconds(0.5)
+                        //--------------shoot------------
+                        .strafeToLinearHeading(shootPos, Math.toRadians(45), new TranslationalVelConstraint(65))
 
-                // Gate
-                .strafeToLinearHeading(new Vector2d(-50, 6), Math.toRadians(270))
-                .strafeToConstantHeading(new Vector2d(-52, 6), new TranslationalVelConstraint(65))
-                .waitSeconds(0.5)
+                        .waitSeconds(2.75)
+                        // ----------------------------Intake 2nd pile --------
+                        .strafeToLinearHeading(new Vector2d(11.5, -30), Math.toRadians(-90), new TranslationalVelConstraint(60))
+                        .strafeToLinearHeading(new Vector2d(11.5, -48), Math.toRadians(-90))
 
-                // Shoot #2
-                .strafeToLinearHeading(shootPos, Math.toRadians(45), new TranslationalVelConstraint(65))
-                .waitSeconds(2.75)
 
-                // Intake #2
-                .strafeToLinearHeading(new Vector2d(-30, -11.5), Math.toRadians(180), new TranslationalVelConstraint(60))
-                .strafeToLinearHeading(new Vector2d(-48, -11.5), Math.toRadians(180))
 
-                // Shoot #3
-                .strafeToLinearHeading(shootPos, Math.toRadians(45), new TranslationalVelConstraint(65))
-                .waitSeconds(2.75)
+                        .strafeToLinearHeading(shootPos, Math.toRadians(45), new TranslationalVelConstraint(65))
+                        .waitSeconds(2.75) // we'll take this out + replace w/ shooting stuff
+                        //--------------pile #3
 
-                // Intake #3
-                .strafeToLinearHeading(new Vector2d(-30, -35), Math.toRadians(180), new TranslationalVelConstraint(60))
-                .strafeToLinearHeading(new Vector2d(-48, -35), Math.toRadians(180))
+                        .strafeToLinearHeading(new Vector2d(35, -30), Math.toRadians(-90), new TranslationalVelConstraint(60))
+                        .strafeToLinearHeading(new Vector2d(35, -48), Math.toRadians(-90))
+                        //--------------final shoot position, off line-----------
+                        .strafeToLinearHeading(new Vector2d(-50, -20), Math.toRadians(75), new TranslationalVelConstraint(60))
+                        .waitSeconds(2.75) // we'll take this out + replace w/ shooting stuff
 
-                // Final shoot position
-                .strafeToLinearHeading(new Vector2d(-20, 50), Math.toRadians(15), new TranslationalVelConstraint(60))
-                .waitSeconds(2.75)
-
-                // Rotate heading for TeleOp setup
-                .turn(Math.toRadians(-90))
 
                 .build()
         );
