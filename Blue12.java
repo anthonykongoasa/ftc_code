@@ -113,7 +113,7 @@ public class Blue12RR extends LinearOpMode {
         intake.setPower(-0.1);
         // ------------shoot #2-------------
          Actions.runBlocking(
-            drive.actionBuilder(new Pose2d(4, -52, Math.toRadians(-92)))
+            drive.actionBuilder(new Pose2d(17, -52, Math.toRadians(180)))
                    .strafeToLinearHeading(shootPos, Math.toRadians(52), new TranslationalVelConstraint(100))
                     .build()
           );
@@ -122,8 +122,8 @@ public class Blue12RR extends LinearOpMode {
         //intake 2
         Actions.runBlocking(
                 drive.actionBuilder(new Pose2d(-20, -16, Math.toRadians(52)))
-                        .strafeToLinearHeading(new Vector2d(33, -28), Math.toRadians(-91), new TranslationalVelConstraint(100))
-                        .strafeToLinearHeading(new Vector2d(33, -52), Math.toRadians(-91), new TranslationalVelConstraint(100))
+                        .strafeToLinearHeading(new Vector2d(33, -25), Math.toRadians(-91), new TranslationalVelConstraint(70))
+                        .strafeToLinearHeading(new Vector2d(33, -48), Math.toRadians(-91), new TranslationalVelConstraint(100))
                        
 
 
@@ -132,7 +132,7 @@ public class Blue12RR extends LinearOpMode {
         // shoot 3
         intake.setPower(-0.1);
         Actions.runBlocking(
-                drive.actionBuilder(new Pose2d(33, -52, Math.toRadians(-91)))
+                drive.actionBuilder(new Pose2d(33, -48, Math.toRadians(-91)))
                         .strafeToLinearHeading(shootPos, Math.toRadians(50), new TranslationalVelConstraint(100))
                         .build()
         );
@@ -154,6 +154,15 @@ public class Blue12RR extends LinearOpMode {
                         .strafeToLinearHeading(new Vector2d(80, -10), Math.toRadians(35), new TranslationalVelConstraint(80))       
         );
          shoot();
+        //off line
+        Actions.runBlocking(
+                drive.actionBuilder(new Pose2d(80, -10, Math.toRadians(35)))
+                        .strafeToLinearHeading(new Vector2d(17, -25), Math.toRadians(180))
+            
+        );
+        
+        
+        
         // off line (not important)
 
 
