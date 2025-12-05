@@ -5,12 +5,15 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
+import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.Servo;
 
 @TeleOp(name="FastPIDFTuner")
 public class FastPIDFTuner extends LinearOpMode {
 
     private DcMotorEx leftMotor, rightMotor;
-
+    private DcMotor intake, belt;
+    private CRServo leftIn, rightIn;
     // Starting PIDF values
     private double P = 120;
     private double I = 0;
@@ -24,6 +27,10 @@ public class FastPIDFTuner extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         leftMotor = (DcMotorEx) hardwareMap.get(DcMotor.class, "leftarm");
         rightMotor = (DcMotorEx) hardwareMap.get(DcMotor.class, "rightarm");
+         intake = hardwareMap.get(DcMotor.class, "intake");
+        belt = hardwareMap.get(DcMotor.class, "uptake");
+         leftIndex = (CRServo)hardwareMap.get(Servo.class, "leftUptake");
+        rightIndex = (CRServo)hardwareMap.get(Servo.class, "rightUptake");
 
         // Run using encoders
         leftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -50,10 +57,14 @@ public class FastPIDFTuner extends LinearOpMode {
             if(gamepad1.dpad_right) targetVelocityRPM += 10;   
             if(gamepad1.dpad_left) targetVelocityRPM -= 10; 
 
-            // Clamp to reasonable range
-            targetVelocityRPM = Math.max(0, Math.min(targetVelocityRPM, 6000));
+            // shoot
+            if(gamepad1.a) {
+                 intake.setPower(-1);
+                leftIndex.setPower(1);
+                rightIndex.setPower(-1);
+                belt.setPower(-01);
+              }
 
-            // Set motors to current target velocity
             
 
             PIDFCoefficients newPIDF = new PIDFCoefficients(P, I, D, F);
