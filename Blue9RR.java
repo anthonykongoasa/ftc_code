@@ -145,16 +145,7 @@ public class Blue9RR extends LinearOpMode {
                         .strafeToLinearHeading(new Vector2d(62, -25), Math.toRadians(-90), new TranslationalVelConstraint(60))
                         .strafeToLinearHeading(new Vector2d(62, -48), Math.toRadians(-90))
         );
-        // go to far shot zone
-        (leftOut).setVelocity(-FARVEL);
-        rightOut.setVelocity(FARVEL);
-        // shot far
-        Actions.runBlocking(
-                drive.actionBuilder(new Pose2d(62, -48, Math.toRadians(-90)))
-                        .strafeToLinearHeading(new Vector2d(80, -10), Math.toRadians(35), new TranslationalVelConstraint(80))       
-        );
-         shoot();
-        // off line (not important)
+        
 
 
 
