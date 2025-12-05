@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
 
-
 import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.SequentialAction;
@@ -12,7 +11,6 @@ import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.acmerobotics.roadrunner.TranslationalVelConstraint;
-
 import org.firstinspires.ftc.teamcode.MecanumDrive;
 import com.qualcomm.robotcore.hardware.PIDCoefficients;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
@@ -26,8 +24,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 @Autonomous(name = "testpathRR")
 public class testpath extends LinearOpMode {
-
-
+    
     double ON = -1;
     double OFF = 0;
     double IN = 0.15;
@@ -45,7 +42,6 @@ public class testpath extends LinearOpMode {
     CRServo leftIndex;
     CRServo rightIndex;
     private MecanumDrive drive;
-
     private ElapsedTime runtime = new ElapsedTime();
 
     @Override
@@ -55,8 +51,8 @@ public class testpath extends LinearOpMode {
         rightOut = (DcMotorEx)hardwareMap.get(DcMotor.class, "rightarm");
         intake = hardwareMap.get(DcMotor.class, "intake");
         belt = hardwareMap.get(DcMotor.class, "uptake");
-        leftIndex = hardwareMap.get(CRServo.class, "leftUptake");
-        rightIndex = hardwareMap.get(CRServo.class, "rightUptake");
+        leftIndex = (CRServo)hardwareMap.get(Servo.class, "leftUptake");
+        rightIndex = (CRServo)hardwareMap.get(Servo.class, "rightUptake");
 
         //PID
         PIDFCoefficients pidSettings = new PIDFCoefficients(NEW_P, NEW_I, NEW_D, 5.46116667);
@@ -84,17 +80,7 @@ public class testpath extends LinearOpMode {
                         .strafeToLinearHeading(shootPos, Math.toRadians(47), new TranslationalVelConstraint(60))
                         .waitSeconds(1) // we'll take this out + replace w/ shooting stuff
 
-                        // ----------------------------Intake 1st pile --------
-                        //intake.setPower(-1);
-                        //.waitSeconds(2)
-                        //.strafeToLinearHeading(new Vector2d(-9, -20), Math.toRadians(-90))
-                      //  .strafeToLinearHeading(new Vector2d(-9, -48), Math.toRadians(-90), new TranslationalVelConstraint(60))
-
-                        //----------------gate-------
-
-                      //  .strafeToLinearHeading(new Vector2d(-4, -50), Math.toRadians(180))
-                     //   .strafeToConstantHeading(new Vector2d(-4, -52), new TranslationalVelConstraint(65))
-                       // .waitSeconds(0.5)
+                       
                         //--------------shoot------------
                       //  .strafeToLinearHeading(shootPos, Math.toRadians(45), new TranslationalVelConstraint(65))
 
@@ -119,6 +105,31 @@ public class testpath extends LinearOpMode {
                         .build()
         );
         shoot();
+        //------------------------------intake POSITION #1----------------
+         Actions.runBlocking(
+             drive.actionBuilder(drive.getPoseEstimate())
+                     .strafeToLinearHeading(new Vector2d(-9, -20), Math.toRadians(-90))
+                     .strafeToLinearHeading(new Vector2d(-9, -48), Math.toRadians(-90), new TranslationalVelConstraint(60))
+                     .waitSeconds(0.2)
+                     //-------------GATE----------
+                     //.strafeToLinearHeading(new Vector2d(-4, -50), Math.toRadians(180))
+                     //.strafeToConstantHeading(new Vector2d(-4, -52), new TranslationalVelConstraint(105))
+                     .waitSeconds(0.5)
+                    .build()
+             );
+        // ------------shoot #2-------------
+        // Actions.runBlocking(
+         //    drive.actionBuilder(drive.getPoseEstimate())
+          //           .strafeToLinearHeading(shootPos, Math.toRadians(47), new TranslationalVelConstraint(60))
+           //  );
+        
+   //     shoot();
+        
+            
+
+        
+        
+        
     }
     private void shoot() {
 
