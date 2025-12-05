@@ -59,107 +59,84 @@ public class Blue12RR extends LinearOpMode {
         waitForStart();
 
         if (isStopRequested()) return;
+        
         (leftOut).setVelocity(-NEARVEL);
         rightOut.setVelocity(NEARVEL);
 
         // ---------------- Convert MeepMeep path to RoadRunner ----------------
 
         Vector2d shootPos = new Vector2d(-20, -16);
+Actions.runBlocking(
+    drive.actionBuilder(startPose)
 
+        // Shoot #1 (approach)
+        .strafeToLinearHeading(shootPos, Math.toRadians(55), new TranslationalVelConstraint(75)) // slow for accurate shot
+        .build()
+);
+shoot();
         Actions.runBlocking(
-                drive.actionBuilder(startPose)
-
-                        // Shoot #1
-                        .strafeToLinearHeading(shootPos, Math.toRadians(55), new TranslationalVelConstraint(70))
-                        // we'll take this out + replace w/ shooting stuff
-
-
-                        //--------------shoot------------
-                        //  .strafeToLinearHeading(shootPos, Math.toRadians(45), new TranslationalVelConstraint(65))
-
-                        //.waitSeconds(2.75)
-                        // ----------------------------Intake 2nd pile --------
-                        //.strafeToLinearHeading(new Vector2d(10.5, -25), Math.toRadians(-90), new TranslationalVelConstraint(60))
-                        //.strafeToLinearHeading(new Vector2d(10.5, -48), Math.toRadians(-90))
-
-
-                        //.strafeToLinearHeading(shootPos, Math.toRadians(45), new TranslationalVelConstraint(65))
-                        //.waitSeconds(2.75) // we'll take this out + replace w/ shooting stuff
-                        //--------------pile #3
-
-                        //.strafeToLinearHeading(new Vector2d(33, -25), Math.toRadians(-90), new TranslationalVelConstraint(60))
-                        //.strafeToLinearHeading(new Vector2d(33, -48), Math.toRadians(-90))
-                        //--------------final shoot position, off line-----------
-                        //.strafeToLinearHeading(new Vector2d(-50, -20), Math.toRadians(75), new TranslationalVelConstraint(60))
-                        //.waitSeconds(2.75) // we'll take this out + replace w/ shooting stuff
-
-
-                        .build()
-        );
-        shoot();
-
-        //------------------------------intake POSITION #1----------------
-        Actions.runBlocking(
-                drive.actionBuilder(new Pose2d(-20, -16, Math.toRadians(47)))
-                        .strafeToLinearHeading(new Vector2d(4, -26), Math.toRadians(-88), new TranslationalVelConstraint(100))
-                        .strafeToLinearHeading(new Vector2d(4, -52), Math.toRadians(-88), new TranslationalVelConstraint(100))
-                        
-                        //-------------GATE----------
-                        .strafeToLinearHeading(new Vector2d(17, -50), Math.toRadians(180))
-                        .strafeToConstantHeading(new Vector2d(17, -52), new TranslationalVelConstraint(105))
-
-                        .build()
-        );
-        intake.setPower(-0.1);
-        // ------------shoot #2-------------
-         Actions.runBlocking(
-            drive.actionBuilder(new Pose2d(17, -52, Math.toRadians(180)))
-                   .strafeToLinearHeading(shootPos, Math.toRadians(52), new TranslationalVelConstraint(100))
-                    .build()
-          );
-
-             shoot();
-        //intake 2
-        Actions.runBlocking(
-                drive.actionBuilder(new Pose2d(-20, -16, Math.toRadians(52)))
-                        .strafeToLinearHeading(new Vector2d(33, -25), Math.toRadians(-91), new TranslationalVelConstraint(70))
-                        .strafeToLinearHeading(new Vector2d(33, -48), Math.toRadians(-91), new TranslationalVelConstraint(100))
-                       
-
-
-                        .build()
-        );
-        // shoot 3
-        intake.setPower(-0.1);
-        Actions.runBlocking(
-                drive.actionBuilder(new Pose2d(33, -48, Math.toRadians(-91)))
-                        .strafeToLinearHeading(shootPos, Math.toRadians(50), new TranslationalVelConstraint(100))
-                        .build()
-        );
-        
-
-        shoot();
-        //intake 3
-         Actions.runBlocking(
-                drive.actionBuilder(new Pose2d(20, -16, Math.toRadians(50)))
-                        .strafeToLinearHeading(new Vector2d(62, -25), Math.toRadians(-90), new TranslationalVelConstraint(60))
-                        .strafeToLinearHeading(new Vector2d(62, -48), Math.toRadians(-90))
-        );
-        // go to far shot zone
-        (leftOut).setVelocity(-FARVEL);
-        rightOut.setVelocity(FARVEL);
-        // shot far
-        Actions.runBlocking(
-                drive.actionBuilder(new Pose2d(62, -48, Math.toRadians(-90)))
-                        .strafeToLinearHeading(new Vector2d(80, -10), Math.toRadians(35), new TranslationalVelConstraint(80))       
-        );
-         shoot();
-        //off line
-        Actions.runBlocking(
-                drive.actionBuilder(new Pose2d(80, -10, Math.toRadians(35)))
-                        .strafeToLinearHeading(new Vector2d(17, -25), Math.toRadians(180))
+        drive.actionBuilder(new Pose2d(-20, -16, Math.toRadians(47)))
             
-        );
+        .strafeToLinearHeading(new Vector2d(4, -26), Math.toRadians(-88), new TranslationalVelConstraint(60)) // sharp
+        .strafeToLinearHeading(new Vector2d(4, -52), Math.toRadians(-88), new TranslationalVelConstraint(70)) // fast straight
+        // Sharp gate turn
+        .strafeToLinearHeading(new Vector2d(8, -48), Math.toRadians(0), new TranslationalVelConstraint(55)) // slow for precision
+        .strafeToConstantHeading(new Vector2d(8, -52), new TranslationalVelConstraint(80)) // final adjustment (open) ram
+        .waitSeconds(0.1)
+        .build()
+);
+intake.setPower(0.3);
+
+// ------------shoot #2-------------
+Actions.runBlocking(
+    drive.actionBuilder(new Pose2d(8, -52, Math.toRadians(180)))
+           .strafeToLinearHeading(shootPos, Math.toRadians(52), new TranslationalVelConstraint(65)) // approach slow
+           .build()
+);
+shoot();
+
+// Intake #2
+Actions.runBlocking(
+    drive.actionBuilder(new Pose2d(-20, -16, Math.toRadians(52)))
+        .strafeToLinearHeading(new Vector2d(33, -25), Math.toRadians(-91), new TranslationalVelConstraint(65)) // strafe slightly slower
+        .strafeToLinearHeading(new Vector2d(33, -48), Math.toRadians(-91), new TranslationalVelConstraint(75)) // straight back, faster
+        .build()
+);
+intake.setPower(0.3);
+
+// Shoot #3
+Actions.runBlocking(
+    drive.actionBuilder(new Pose2d(33, -48, Math.toRadians(-91)))
+        .strafeToLinearHeading(shootPos, Math.toRadians(50), new TranslationalVelConstraint(65)) // precise shot
+        .build()
+);
+shoot();
+
+// Intake #3
+Actions.runBlocking(
+    drive.actionBuilder(new Pose2d(20, -16, Math.toRadians(50)))
+        .strafeToLinearHeading(new Vector2d(62, -25), Math.toRadians(-90), new TranslationalVelConstraint(60)) // strafe to intake
+        .strafeToLinearHeading(new Vector2d(62, -48), Math.toRadians(-90), new TranslationalVelConstraint(70)) // straight back, faster
+        .build()
+);
+
+// Far shot zone
+leftOut.setVelocity(-FARVEL);
+rightOut.setVelocity(FARVEL);
+        
+intake.setPower(0.3);
+Actions.runBlocking(
+    drive.actionBuilder(new Pose2d(62, -48, Math.toRadians(-90)))
+        .strafeToLinearHeading(new Vector2d(80, -10), Math.toRadians(35), new TranslationalVelConstraint(65)) // sharp turn 
+        .build()
+);
+shoot();
+
+// Off-line final // next to gate hoepfully
+Actions.runBlocking(
+    drive.actionBuilder(new Pose2d(80, -10, Math.toRadians(35)))
+        .strafeToLinearHeading(new Vector2d(17, -25), Math.toRadians(180), new TranslationalVelConstraint(70)) // straight, fast
+);
         
         
         
@@ -178,15 +155,15 @@ public class Blue12RR extends LinearOpMode {
         leftIndex.setPosition(0);
         rightIndex.setPosition(1);
         belt.setPower(-0.8);
-        delay(1); // wait 3 seconds for shooting
+        delay(1); // wait 1 seconds for shooting
 
         // Stop all
 
-
+        //spinning against
         leftIndex.setPosition(0.8);
         rightIndex.setPosition(0.2);
-        belt.setPower(-0.3);
-        delay(0.2);
+       // belt.setPower(-0.3);
+       
     }
 
     // -------- Delay helper ----------
