@@ -20,7 +20,8 @@ public class Blue9RR extends LinearOpMode {
     double ON = -1;
     double OFF = 0;
     double IN = 0.15;
-    double NEARVEL = 1110; //(tune)
+    double NEARVEL = 1125; //(tune)
+    double FARVEL = 1500;
 
     //PID
     private double NEW_P = 120;
@@ -69,8 +70,8 @@ public class Blue9RR extends LinearOpMode {
                 drive.actionBuilder(startPose)
 
                         // Shoot #1
-                        .strafeToLinearHeading(shootPos, Math.toRadians(55), new TranslationalVelConstraint(60))
-                        .waitSeconds(0.5) // we'll take this out + replace w/ shooting stuff
+                        .strafeToLinearHeading(shootPos, Math.toRadians(55), new TranslationalVelConstraint(70))
+                        // we'll take this out + replace w/ shooting stuff
 
 
                         //--------------shoot------------
@@ -80,7 +81,6 @@ public class Blue9RR extends LinearOpMode {
                         // ----------------------------Intake 2nd pile --------
                         //.strafeToLinearHeading(new Vector2d(10.5, -25), Math.toRadians(-90), new TranslationalVelConstraint(60))
                         //.strafeToLinearHeading(new Vector2d(10.5, -48), Math.toRadians(-90))
-
 
 
                         //.strafeToLinearHeading(shootPos, Math.toRadians(45), new TranslationalVelConstraint(65))
@@ -101,9 +101,9 @@ public class Blue9RR extends LinearOpMode {
         //------------------------------intake POSITION #1----------------
         Actions.runBlocking(
                 drive.actionBuilder(new Pose2d(-20, -16, Math.toRadians(47)))
-                        .strafeToLinearHeading(new Vector2d(4, -26), Math.toRadians(-88))
-                        .strafeToLinearHeading(new Vector2d(4, -52), Math.toRadians(-88), new TranslationalVelConstraint(60))
-                        .waitSeconds(0.2)
+                        .strafeToLinearHeading(new Vector2d(4, -26), Math.toRadians(-88), new TranslationalVelConstraint(100))
+                        .strafeToLinearHeading(new Vector2d(4, -52), Math.toRadians(-88), new TranslationalVelConstraint(100))
+                        
                         //-------------GATE----------
                         //.strafeToLinearHeading(new Vector2d(-4, -50), Math.toRadians(180))
                         //.strafeToConstantHeading(new Vector2d(-4, -52), new TranslationalVelConstraint(105))
@@ -114,28 +114,47 @@ public class Blue9RR extends LinearOpMode {
         // ------------shoot #2-------------
          Actions.runBlocking(
             drive.actionBuilder(new Pose2d(4, -48, Math.toRadians(-92)))
-                   .strafeToLinearHeading(shootPos, Math.toRadians(52), new TranslationalVelConstraint(60))
+                   .strafeToLinearHeading(shootPos, Math.toRadians(52), new TranslationalVelConstraint(100))
                     .build()
           );
 
              shoot();
+        //intake 2
         Actions.runBlocking(
                 drive.actionBuilder(new Pose2d(-20, -16, Math.toRadians(52)))
-                        .strafeToLinearHeading(new Vector2d(33, -28), Math.toRadians(-91))
-                        .strafeToLinearHeading(new Vector2d(33, -52), Math.toRadians(-91), new TranslationalVelConstraint(60))
-                        .waitSeconds(0.2)
+                        .strafeToLinearHeading(new Vector2d(33, -28), Math.toRadians(-91), new TranslationalVelConstraint(100))
+                        .strafeToLinearHeading(new Vector2d(33, -52), Math.toRadians(-91), new TranslationalVelConstraint(100))
+                       
 
 
                         .build()
         );
+        // shoot 3
         intake.setPower(-0.1);
         Actions.runBlocking(
-                drive.actionBuilder(new Pose2d(31, -48, Math.toRadians(-91)))
-                        .strafeToLinearHeading(shootPos, Math.toRadians(50), new TranslationalVelConstraint(60))
+                drive.actionBuilder(new Pose2d(33, -52, Math.toRadians(-91)))
+                        .strafeToLinearHeading(shootPos, Math.toRadians(50), new TranslationalVelConstraint(100))
                         .build()
         );
+        
 
         shoot();
+        //intake 3
+         Actions.runBlocking(
+                drive.actionBuilder(new Pose2d(20, -16, Math.toRadians(50)))
+                        .strafeToLinearHeading(new Vector2d(62, -25), Math.toRadians(-90), new TranslationalVelConstraint(60))
+                        .strafeToLinearHeading(new Vector2d(62, -48), Math.toRadians(-90))
+        );
+        // go to far shot zone
+        (leftOut).setVelocity(-FARVEL);
+        rightOut.setVelocity(FARVEL);
+        // shot far
+        Actions.runBlocking(
+                drive.actionBuilder(new Pose2d(62, -48, Math.toRadians(-90)))
+                        .strafeToLinearHeading(new Vector2d(80, -10), Math.toRadians(35), new TranslationalVelConstraint(80))       
+        );
+         shoot();
+        // off line (not important)
 
 
 
@@ -150,7 +169,7 @@ public class Blue9RR extends LinearOpMode {
         leftIndex.setPosition(0);
         rightIndex.setPosition(1);
         belt.setPower(-0.8);
-        delay(2.25); // wait 3 seconds for shooting
+        delay(1); // wait 3 seconds for shooting
 
         // Stop all
 
@@ -158,7 +177,7 @@ public class Blue9RR extends LinearOpMode {
         leftIndex.setPosition(0.8);
         rightIndex.setPosition(0.2);
         belt.setPower(-0.3);
-        delay(0.5);
+        delay(0.2);
     }
 
     // -------- Delay helper ----------
