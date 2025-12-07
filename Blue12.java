@@ -66,59 +66,69 @@ public class Blue12RR extends LinearOpMode {
         // ---------------- Convert MeepMeep path to RoadRunner ----------------
 
         Vector2d shootPos = new Vector2d(-20, -16);
-Actions.runBlocking(
-    drive.actionBuilder(startPose)
 
-        // Shoot #1 (approach)
-        .strafeToLinearHeading(shootPos, Math.toRadians(55), new TranslationalVelConstraint(75)) // slow for accurate shot
-        .build()
-);
-shoot();
+
         Actions.runBlocking(
-        drive.actionBuilder(new Pose2d(-20, -16, Math.toRadians(47)))
-            
-        .strafeToLinearHeading(new Vector2d(4, -26), Math.toRadians(-88), new TranslationalVelConstraint(60)) // sharp
-        .strafeToLinearHeading(new Vector2d(4, -52), Math.toRadians(-88), new TranslationalVelConstraint(70)) // fast straight
-        // Sharp gate turn
-        .strafeToLinearHeading(new Vector2d(8, -48), Math.toRadians(0), new TranslationalVelConstraint(55)) // slow for precision
-        .strafeToConstantHeading(new Vector2d(8, -52), new TranslationalVelConstraint(80)) // final adjustment (open) ram
-        .waitSeconds(0.1)
-        .build()
-);
-intake.setPower(0.3);
+                drive.actionBuilder(startPose)
 
-// ------------shoot #2-------------
-Actions.runBlocking(
-    drive.actionBuilder(new Pose2d(8, -52, Math.toRadians(180)))
-           .strafeToLinearHeading(shootPos, Math.toRadians(52), new TranslationalVelConstraint(65)) // approach slow
-           .build()
-);
-shoot();
+                        // Shoot #1
+                        .strafeToLinearHeading(shootPos, Math.toRadians(55), new TranslationalVelConstraint(70))
+                       
 
-// Intake #2
-Actions.runBlocking(
-    drive.actionBuilder(new Pose2d(-20, -16, Math.toRadians(52)))
-        .strafeToLinearHeading(new Vector2d(33, -25), Math.toRadians(-91), new TranslationalVelConstraint(65)) // strafe slightly slower
-        .strafeToLinearHeading(new Vector2d(33, -48), Math.toRadians(-91), new TranslationalVelConstraint(75)) // straight back, faster
-        .build()
-);
-intake.setPower(0.3);
+                        .build()
+        );
+        shoot();
 
-// Shoot #3
-Actions.runBlocking(
-    drive.actionBuilder(new Pose2d(33, -48, Math.toRadians(-91)))
-        .strafeToLinearHeading(shootPos, Math.toRadians(50), new TranslationalVelConstraint(65)) // precise shot
-        .build()
-);
-shoot();
+        //------------------------------intake POSITION #1----------------
+        Actions.runBlocking(
+                drive.actionBuilder(new Pose2d(-20, -16, Math.toRadians(47)))
+            //annoying sharp turn
+                        .strafeToLinearHeading(new Vector2d(4, -26), Math.toRadians(-88), new TranslationalVelConstraint(60))
+                        .strafeToLinearHeading(new Vector2d(4, -52), Math.toRadians(-88), new TranslationalVelConstraint(50))
+                        
+                        //-------------GATE----------
+                        //.strafeToLinearHeading(new Vector2d(-4, -50), Math.toRadians(180))
+                        //.strafeToConstantHeading(new Vector2d(-4, -52), new TranslationalVelConstraint(105))
 
-// Intake #3
-Actions.runBlocking(
-    drive.actionBuilder(new Pose2d(20, -16, Math.toRadians(50)))
-        .strafeToLinearHeading(new Vector2d(62, -25), Math.toRadians(-90), new TranslationalVelConstraint(60)) // strafe to intake
-        .strafeToLinearHeading(new Vector2d(62, -48), Math.toRadians(-90), new TranslationalVelConstraint(70)) // straight back, faster
-        .build()
-);
+                        .build()
+        );
+        intake.setPower(-0.1);
+        // ------------shoot #2-------------
+         Actions.runBlocking(
+            drive.actionBuilder(new Pose2d(4, -52, Math.toRadians(-88)))
+                   .strafeToLinearHeading(shootPos, Math.toRadians(52), new TranslationalVelConstraint(70))
+                    .build()
+          );
+
+             shoot();
+        //intake 2
+        Actions.runBlocking(
+                drive.actionBuilder(new Pose2d(-20, -16, Math.toRadians(52)))
+                        .splineTo(new Vector2d(33, -28), Math.toRadians(-91), new TranslationalVelConstraint(70))
+                        .splineTo(new Vector2d(33, -52), Math.toRadians(-91), new TranslationalVelConstraint(60))
+                       
+
+
+                        .build()
+        );
+        // shoot 3
+        intake.setPower(-0.1);
+        Actions.runBlocking(
+                drive.actionBuilder(new Pose2d(33, -52, Math.toRadians(-91)))
+                        .strafeToLinearHeading(shootPos, Math.toRadians(50), new TranslationalVelConstraint(75))
+                        .build()
+        );
+        
+
+        shoot();
+        //intake 3
+         Actions.runBlocking(
+                drive.actionBuilder(new Pose2d(-20, -16, Math.toRadians(50)))
+                        .splineTo(new Vector2d(62, -25), Math.toRadians(-90), new TranslationalVelConstraint(70))
+                        .splineTo(new Vector2d(62, -48), Math.toRadians(-90), new TranslationalVelConstraint(60))
+        );
+        
+
 
 // Far shot zone
 leftOut.setVelocity(-FARVEL);
@@ -127,20 +137,20 @@ rightOut.setVelocity(FARVEL);
 intake.setPower(0.3);
 Actions.runBlocking(
     drive.actionBuilder(new Pose2d(62, -48, Math.toRadians(-90)))
-        .strafeToLinearHeading(new Vector2d(80, -10), Math.toRadians(35), new TranslationalVelConstraint(65)) // sharp turn 
+        .strafeToLinearHeading(new Vector2d(80, -10), Math.toRadians(30), new TranslationalVelConstraint(40)) 
         .build()
 );
 shoot();
 
 // Off-line final // next to gate hoepfully
 Actions.runBlocking(
-    drive.actionBuilder(new Pose2d(80, -10, Math.toRadians(35)))
-        .strafeToLinearHeading(new Vector2d(17, -25), Math.toRadians(180), new TranslationalVelConstraint(70)) // straight, fast
+    drive.actionBuilder(new Pose2d(80, -10, Math.toRadians(30)))
+        .strafeToLinearHeading(new Vector2d(17, -25), Math.toRadians(180), new TranslationalVelConstraint(60)) 
 );
         
         
         
-        // off line (not important)
+  
 
 
 
